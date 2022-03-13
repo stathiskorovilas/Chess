@@ -1,0 +1,1 @@
+#define ASSET_PATH "asset\"
