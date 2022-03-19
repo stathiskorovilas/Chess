@@ -6,13 +6,13 @@
 
 class BoardSquare {
 	Piece* p;
-	float pos_x;  //position x on the canvas
-	float pos_y;  //position y on the canvas
-	int board_x;  //position x on the board (array)
-	int board_y;  //position y on the board (array
-	bool highlighted = 0; //when hovered upon
-	bool active = 0; //when it is clicked upon
-	bool legal_square = 0; //when a piece on the map has been clicked and this square is a legal move for him to go
+	float pos_x;			 //position x on the canvas
+	float pos_y;			 //position y on the canvas
+	int board_x;			 //position x on the board (array)
+	int board_y;			 //position y on the board (array)
+	bool highlighted = 0;	 //when hovered upon
+	bool active = 0;         //when it is clicked upon
+	bool legal_square = 0;   //when a piece on the map has been clicked and this square is a legal move for him to go
 public:
 	BoardSquare(Piece* , float , float ,  int , int);
 	~BoardSquare();
@@ -60,9 +60,8 @@ public:
 
 
 
-	//helpfull function to find the distance between two point
+	//helpfull function to find the distance between two points
 	inline bool contains(float x, float y) { return distance(x, y, pos_x, pos_y) < 50; }
 
 	void draw();
-	void update();
 };

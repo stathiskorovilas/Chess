@@ -8,25 +8,33 @@
 #include "Queen.h"
 #include "graphics.h"
 #include "Button.h"
-#include <string>
-#include <iostream>
 
 
-
-
+/*
+* What is init?
+*	init is a function which initializes all the pieces on the board
+*	It will be used at the start of the game once , and again if the user clicks the restart button at the end of the game
+* 
+* What is actually going on?
+*	It creates for each and every square on the board an object from the class BoardSquare which is used to represent a square on the board and saves it in a 
+*	8x8 array.
+* 
+*/
 void Game::init()
 {
 
 
-	//pos_x , pos_y are the coordinates of each square's center
+	//pos_x , pos_y are the coordinates of each square's center in the chess board
 	float pos_x = 50.0f; //row x
 	float pos_y = 50.0f; //column y
+
+
 	for (int i = 0; i < 8; i++)
 	{
 		for (int j = 0; j < 8; j++)
 		{
 			
-			//FIRST ROW - BLACK PIECES
+			//--------------------------------FIRST ROW - BLACK PIECES--------------------------------
 			if (i == 0)
 			{
 				//THE 2 ROOKS
@@ -63,7 +71,7 @@ void Game::init()
 			}
 
 
-			//SECOND ROW - BLACK PAWNS
+			//--------------------------------SECOND ROW - BLACK PAWNS--------------------------------
 			if (i == 1)
 			{
 				board[i][j] = new BoardSquare(new Pawn(pos_x, pos_y , 0), pos_x, pos_y , i , j);
@@ -71,7 +79,7 @@ void Game::init()
 
 
 
-			//3 - 4 - 5 - 6TH ROW - EMPTY SQUARES 
+			//--------------------------------3 - 4 - 5 - 6TH ROW - EMPTY SQUARES--------------------------------
 			if (i > 1 && i < 6)
 			{
 				board[i][j] = new BoardSquare(nullptr , pos_x, pos_y , i , j);
@@ -79,7 +87,7 @@ void Game::init()
 
 
 
-			// SEVENTH ROW - WHITE PAWNS
+			//--------------------------------SEVENTH ROW - WHITE PAWNS--------------------------------
 			if (i == 6)
 			{
 				board[i][j] = new BoardSquare(new Pawn(pos_x, pos_y , 1), pos_x, pos_y , i , j );
@@ -88,7 +96,7 @@ void Game::init()
 
 
 
-			//EIGHTH ROW - WHITE PIECES
+			//--------------------------------EIGHTH ROW - WHITE PIECES--------------------------------
 			if (i == 7)
 			{
 				//THE 2 ROOKS
@@ -137,6 +145,24 @@ void Game::init()
 
 
 
+
+
+
+
+/*
+* What is draw?
+*	draw is a function which is used to describe how everything looks like (board , pieces ...)
+* 
+* What is actually going on?
+*	First of all if the state of the game is PLAYING
+*		- Draw the board picture (a 800x800 png picture representing a chessboard)
+*		- Draw all the squares on the board (some might not have something to draw (like the squares that has no piece in them and the cursor doesnt hover upno them)
+* 
+*	Then when the state goes to ENDED
+*		- Draw a background
+*		- Draw a text in which declares who is the winner
+*		- Draw a restart button 
+*/
 void Game::draw()
 {
 	graphics::Brush br;
@@ -173,7 +199,9 @@ void Game::draw()
 		br.fill_color[1] = 1.0f;
 		br.fill_color[2] = 1.0f;
 		graphics::setFont(ASSET_PATH  + std::string("SupermercadoOne-Regular.ttf"));
+
 		graphics::drawText(50, 150, 100.0f, winner + " is the winner", br);
+
 		restart->draw();
 		
 	}
@@ -188,6 +216,29 @@ void Game::draw()
 
 
 
+
+
+
+/*
+* What is update?
+*	This function will update the state of the game for any second
+* 
+* What is actually going on
+*	First of all if the state of the game is ENDED
+*		- Check if the cursor is anywhere near the restart button and the user clicked the left button of the mouse , then restart the game
+* 
+*	Then... (if the game is not ENDED (it is PLAYING)) 
+*		P1: Check if the player hovers on a particular square. If he does , save it in "cur_select" and highlight it -- unhighlight the rest
+*		P2: Check if the user has hovered on a particular square which has a piece in it and clicked on it , save it in an another variable called "active_player" and set it active (the color of an active square is diffrent of the one that has been hovered upon)
+*		P3: Check if the user is dragging a piece from a square , if he does make the piece follow the cursor wherever it goes.
+*		P4: If there is an active player (A board square that has been clicked upon and has a piece on it) then ... :
+*			- Get the legal moves of this particular piece for the player that has his turn
+*			- Do an extra check : If the piece in the active square is a pawn then check for diagonal captures
+*			- Show all the legal moves for this particular piece on the map (by enabling all the squares that the piece can go to)
+*		P5: Stop showing the available squares if there is no active piece
+*		P6: Check if the board square where the user has decided to let the piece fall to , is a legal move - else just return the piece from where it has been picked from
+* 
+*/
 void Game::update()
 {
 	graphics::MouseState ms;
@@ -225,6 +276,9 @@ void Game::update()
 	//cur_select is the variable that stores the square that has the cursor pointed upon
 	BoardSquare* cur_select = nullptr;
 
+
+
+	//P1
 	//highlight all the squares that come across the cursor
 	//also save the highlighted square in a variable called cur_select and unhighlight the rest
 	for (int i = 0; i < 8; i++)
@@ -246,7 +300,7 @@ void Game::update()
 
 
 	
-
+	//P2
 	//save & highlight the square that the user clicked upon (the square must have a piece)
 	//and unhighlight the rest.
 	if (ms.button_left_pressed && cur_select && cur_select->isThereAPiece())
@@ -271,7 +325,7 @@ void Game::update()
 
 
 
-
+	//P3
 	//the user is dragging an active piece
 	//that means we have to take that piece wherever he moves the cursor 
 	if (ms.dragging && active_player)
@@ -281,7 +335,9 @@ void Game::update()
 	}
 
 
-
+	
+	
+	//P4
 	//This will show all the available squares for the active player
 	if (active_player)
 	{
@@ -371,6 +427,9 @@ void Game::update()
 	}
 
 
+
+
+	//P5
 	//This will stop showing the available squares since there is no active player
 	if (!active_player)
 	{
@@ -389,8 +448,10 @@ void Game::update()
 	}
 
 
+
+
+	//P6
 	//after clicking a piece user has released the left click
-	//we reset the state to idle
 	if (ms.button_left_released && active_player)
 	{
 		

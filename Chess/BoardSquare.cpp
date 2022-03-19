@@ -50,15 +50,6 @@ void BoardSquare::draw()
 	br.fill_opacity = 0.3f * is_legal;
 	br.outline_opacity = 0.0f;
 	graphics::drawDisk(pos_x, pos_y, 20.0f , br);
-
-
-
-
 }
 
-
-void BoardSquare::update()
-{
-
-}
 

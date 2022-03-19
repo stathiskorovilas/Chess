@@ -45,6 +45,10 @@ public:
 	inline short getPlayer() { return player; }
 	inline int getMoves() { return moves; }
 	inline int getPieceID() { return piece_id; }
+
+
+	//-------------------------DIRECTION FUNCTIONS-------------------------\\
+	//Based on an initial position these functions show the squars available from any direction (these functions will be used from each piece diffrently)
 	
 
 	//All these functions return all the available points for a direction , given an initial x/y on the board (ex. board[1][0])

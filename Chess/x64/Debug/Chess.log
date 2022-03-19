@@ -1,8 +1,8 @@
 ﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(496,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
   BoardSquare.cpp
   game.cpp
-C:\Users\stath\OneDrive\Desktop\Work\University\Projects\C++\3190092\3190092\Chess\game.cpp(195,41): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\stath\OneDrive\Desktop\Work\University\Projects\C++\3190092\3190092\Chess\game.cpp(196,41): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\stath\OneDrive\Desktop\Chess\Chess\game.cpp(246,41): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\stath\OneDrive\Desktop\Chess\Chess\game.cpp(247,41): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   main.cpp
   Generating Code...
-  Chess.vcxproj -> C:\Users\stath\OneDrive\Desktop\Work\University\Projects\C++\3190092\3190092\bin\Chessd.exe
+  Chess.vcxproj -> C:\Users\stath\OneDrive\Desktop\Chess\bin\Chessd.exe

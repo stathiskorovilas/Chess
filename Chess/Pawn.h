@@ -17,7 +17,7 @@ public:
 	void update();
 
 
-	//legal moves for pawn is 2up (or 1) if its his first move and only one for the rest
+	//legal moves for pawn is 2up (or 1) if its his first move and only one for the rest 
 	std::vector < std::vector < std::vector <int>>> legalMoves(int board_x, int board_y);
 
 };
