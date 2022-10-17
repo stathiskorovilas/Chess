@@ -1,3 +1,5 @@
+(WIP)
+
 Simple chess game with C++ using SSG , which is a simplified graphics library.
 
 SSG Documentation: https://cgaueb.github.io/sgg/index.html
