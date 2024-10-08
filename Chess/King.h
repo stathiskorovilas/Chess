@@ -11,13 +11,13 @@ class King : public Piece
 {
 	std::string image = "";
 public:
-	inline King(float x, float y, bool player) : Piece(x, y, player , 3) , image(player?"w-king.png":"b-king.png"){}
+	inline King(float x, float y, PLAYER player) : Piece(x, y, player , KING) , image(player?"w-king.png":"b-king.png"){}
 
 
 	void draw();
-	void update();
+	
 
-	//king moves in any direction but only one block away
+	//Up/Down , Left/Right - One block
 	std::vector < std::vector < std::vector <int>>> legalMoves(int board_x, int board_y);
 };
 
@@ -39,10 +39,4 @@ std::vector < std::vector < std::vector <int>>> King::legalMoves(int board_x, in
 }
 
 
-
-
-
-void King::update()
-{
-}
 

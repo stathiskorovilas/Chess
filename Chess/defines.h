@@ -12,7 +12,22 @@
 #define ASSET_PATH ".\\assets\\"
 #define CANVAS_WH 800
 
+enum PIECE
+{
+	ROOK = 1,
+	QUEEN,
+	KING,
+	KNIGHT,
+	PAWN,
+	BISHOP
+};
 
+
+enum PLAYER
+{
+	BLACK,
+	WHITE
+};
 
 
 inline float distance(float x1, float y1, float x2, float y2)
