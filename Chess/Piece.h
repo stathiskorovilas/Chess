@@ -3,43 +3,61 @@
 #include <string>
 #include <vector>
 
-/*
-* This is the interface for our pieces
-*/
 
 
 class Piece 
 {
-	int piece_id;
-	/*
-	* 1: Rook
-	* 2: Queen
-	* 3: King
-	* 4: Knight
-	* 5: Pawn
-	* 6: Bishop
-	*/
-	
+
+	PLAYER player; 
+	PIECE piece_id;
+	int moves = 0;
+
+	//Pixel position on the canvas
 	float pos_x;
 	float pos_y;
-	bool player; //0 if black 1 if white
-	int moves = 0;
+
+
 
 
 public:
-	inline Piece(float pos_x, float pos_y , bool player , int piece_id): pos_x(pos_x) , pos_y(pos_y) , player(player) , piece_id(piece_id) {}
+	inline Piece(float pos_x, float pos_y , PLAYER player , PIECE piece_id): pos_x(pos_x) , pos_y(pos_y) , player(player) , piece_id(piece_id) {}
 
-	//functions to be overriden by child classes
+
+
+	/////////////////////////////////////////////////////////////
+	////////////VISUAL REPRESENTATION OF THE PIECE////////////
+	/////////////////////////////////////////////////////////////
 	virtual void draw() = 0;
-	virtual void update() = 0;
+	
+
+	/*
+	* All possible moves -based on the position (x,y) of the piece calling it- for a piece will be saved in this vector.
+	* Example:
+	*legalMoves = { {(1,0) , (2,0) , ...} , {...} , {...} , ... }
+	* 
+	* Where the vectors inside legalMoves , are directions , and the vectors inside directions is a (x,y) position
+	* Except King , Pawn , Knight which have their own method for calculating possible positions.
+	*/
 	virtual std::vector<std::vector<std::vector<int>>> legalMoves(int , int) = 0;
 
-	//setters - add
+
+	///////////////////////////////
+	////////////SETTERS////////////
+	///////////////////////////////
 	inline void setXY(float x, float y) { pos_x = x; pos_y = y; }
+	
+	
+
+	/////////////////////////////
+	////////////OTHER////////////
+	/////////////////////////////
 	inline void addMoves() { moves++; }
 
 
-	//getters
+
+	///////////////////////////////
+	////////////GETTERS////////////
+	///////////////////////////////
 	inline float getX() { return pos_x; }
 	inline float getY() { return pos_y; }
 	inline short getPlayer() { return player; }
@@ -47,11 +65,13 @@ public:
 	inline int getPieceID() { return piece_id; }
 
 
-	//-------------------------DIRECTION FUNCTIONS-------------------------\\
-	//Based on an initial position these functions show the squars available from any direction (these functions will be used from each piece diffrently)
+
+	/////////////////////////////////////////////////////////////
+	////////////DEFINITION OF DIRECTION FUNCTIONS////////////
+	/////////////////////////////////////////////////////////////
 	
 
-	//All these functions return all the available points for a direction , given an initial x/y on the board (ex. board[1][0])
+	//USED BY: Rook , Queen , Bishop
 	inline std::vector<std::vector<int>> getUpSquares(int x, int y);
 	inline std::vector<std::vector<int>> getDownSquares(int x, int y);
 	inline std::vector<std::vector<int>> getRightSquares(int x, int y);
@@ -62,21 +82,29 @@ public:
 	inline std::vector<std::vector<int>> getDownRightSquares(int x, int y);
 
 
-	//all possible moves for King
+	//For King
 	inline std::vector < std::vector<int>> getKingSquares(int x, int y);
 
 
-	//all possible moves for pawn (fm indicates if its the pawn's first move or not) , we also need the player (black or white) because black pieces go down , white goes up
-	inline std::vector<std::vector<int>> getPawnUPSquares(int x, int y, bool fm , bool player);
-	inline std::vector<std::vector<int>> getPawnUPLeftSquares(int x, int y, bool player);
-	inline std::vector<std::vector<int>> getPawnUPRightSquares(int x, int y, bool player);
+	//For Pawn (We include Up-Left & Up-Right in case there is a piece to capture there.
+	inline std::vector<std::vector<int>> getPawnUPSquares(int x, int y, bool fm , PLAYER player);
+	inline std::vector<std::vector<int>> getPawnUPLeftSquares(int x, int y, PLAYER player);
+	inline std::vector<std::vector<int>> getPawnUPRightSquares(int x, int y, PLAYER player);
 
 
-	//all possible moves for Knight
+	//For Knight
 	inline std::vector < std::vector<int>> getKnightSquares(int x, int y);
 
 
 };
+
+
+
+
+/////////////////////////////////////////////////////////////
+////////////IMPLEMENTATION OF DIRECTION FUNCTIONS////////////
+/////////////////////////////////////////////////////////////
+
 
 
 std::vector<std::vector<int>> Piece::getUpSquares(int x, int y)
@@ -218,7 +246,7 @@ std::vector<std::vector<int>> Piece::getKingSquares(int x, int y)
 }
 
 
-std::vector<std::vector<int>> Piece::getPawnUPSquares(int x, int y, bool fm , bool player)
+std::vector<std::vector<int>> Piece::getPawnUPSquares(int x, int y, bool fm , PLAYER player)
 {
 	std::vector<std::vector<int>> vec;
 	if (fm)
@@ -250,7 +278,7 @@ std::vector<std::vector<int>> Piece::getPawnUPSquares(int x, int y, bool fm , bo
 }
 
 
-std::vector<std::vector<int>> Piece::getPawnUPLeftSquares(int x, int y, bool player)
+std::vector<std::vector<int>> Piece::getPawnUPLeftSquares(int x, int y, PLAYER player)
 {
 	std::vector<std::vector<int>> vec;
 
@@ -267,7 +295,7 @@ std::vector<std::vector<int>> Piece::getPawnUPLeftSquares(int x, int y, bool pla
 }
 
 
-std::vector<std::vector<int>> Piece::getPawnUPRightSquares(int x, int y, bool player )
+std::vector<std::vector<int>> Piece::getPawnUPRightSquares(int x, int y, PLAYER player )
 {
 	std::vector<std::vector<int>> vec;
 	if (player && y!=7)

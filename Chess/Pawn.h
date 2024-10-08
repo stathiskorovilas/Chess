@@ -10,14 +10,12 @@
 class Pawn : public Piece {
 	std::string image = "";
 public:
-	inline Pawn(float x , float y , bool player) : Piece(x , y , player , 5) , image(player ? "w-pawn.png" : "b-pawn.png") {}
+	inline Pawn(float x , float y , PLAYER player) : Piece(x , y , player , PAWN) , image(player ? "w-pawn.png" : "b-pawn.png") {}
 
 
 	void draw();
-	void update();
 
-
-	//legal moves for pawn is 2up (or 1) if its his first move and only one for the rest 
+	//UP(2 if first move , 1 if not) , Up/Left - Up/Right (Only for capture)
 	std::vector < std::vector < std::vector <int>>> legalMoves(int board_x, int board_y);
 
 };
@@ -41,7 +39,3 @@ std::vector < std::vector < std::vector <int>>> Pawn::legalMoves(int board_x, in
 	return vec;
 }
 
-
-void Pawn::update()
-{
-}

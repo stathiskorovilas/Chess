@@ -9,13 +9,13 @@
 class Knight : public Piece {
 	std::string image = "";
 public:
-	inline Knight(float x, float y, bool player): Piece(x , y , player , 4) , image(player ? "w-knight.png" : "b-knight.png") {}
+	inline Knight(float x, float y, PLAYER player): Piece(x , y , player , KNIGHT) , image(player ? "w-knight.png" : "b-knight.png") {}
 
 
 	void draw();
-	void update();
 
-	//legal moves for knight will be the squares that are 2 up/down and 1 left or right from it
+
+	//2 Up/Down & 1 Left/Right
 	std::vector < std::vector < std::vector <int>>> legalMoves(int board_x, int board_y);
 };
 
@@ -36,8 +36,3 @@ std::vector < std::vector < std::vector <int>>> Knight::legalMoves(int board_x, 
 	return vec;
 }
 
-
-
-void Knight::update()
-{
-}

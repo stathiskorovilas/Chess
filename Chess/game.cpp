@@ -9,6 +9,8 @@
 #include "graphics.h"
 #include "Button.h"
 
+#include "iostream"
+
 
 /*
 * What is init?
@@ -40,32 +42,32 @@ void Game::init()
 				//THE 2 ROOKS
 				if (j == 0 || j == 7)
 				{
-					board[i][j] = new BoardSquare(new Rook(pos_x, pos_y, 0), pos_x, pos_y , i , j);
+					board[i][j] = new BoardSquare(new Rook(pos_x, pos_y, BLACK), pos_x, pos_y , i , j);
 				}
 
 
 				//THE 2 KNIGHTS
 				if (j == 1 || j == 6)
 				{
-					board[i][j] = new BoardSquare(new Knight(pos_x, pos_y, 0), pos_x, pos_y , i , j);
+					board[i][j] = new BoardSquare(new Knight(pos_x, pos_y, BLACK), pos_x, pos_y , i , j);
 				}
 
 				//THE 2 BISHOPS
 				if (j == 2 || j == 5)
 				{
-					board[i][j] = new BoardSquare(new Bishop(pos_x, pos_y, 0), pos_x, pos_y , i , j);
+					board[i][j] = new BoardSquare(new Bishop(pos_x, pos_y, BLACK), pos_x, pos_y , i , j);
 				}
 				
 				//THE QUEEN
 				if (j == 3)
 				{
-					board[i][j] = new BoardSquare(new Queen(pos_x, pos_y, 0), pos_x, pos_y , i , j);
+					board[i][j] = new BoardSquare(new Queen(pos_x, pos_y, BLACK), pos_x, pos_y , i , j);
 				}
 
 				//THE KING
 				if (j == 4)
 				{
-					board[i][j] = new BoardSquare(new King(pos_x, pos_y, 0), pos_x, pos_y , i , j);
+					board[i][j] = new BoardSquare(new King(pos_x, pos_y, BLACK), pos_x, pos_y , i , j);
 
 				}
 			}
@@ -74,7 +76,7 @@ void Game::init()
 			//--------------------------------SECOND ROW - BLACK PAWNS--------------------------------
 			if (i == 1)
 			{
-				board[i][j] = new BoardSquare(new Pawn(pos_x, pos_y , 0), pos_x, pos_y , i , j);
+				board[i][j] = new BoardSquare(new Pawn(pos_x, pos_y , BLACK), pos_x, pos_y , i , j);
 			}
 
 
@@ -90,7 +92,7 @@ void Game::init()
 			//--------------------------------SEVENTH ROW - WHITE PAWNS--------------------------------
 			if (i == 6)
 			{
-				board[i][j] = new BoardSquare(new Pawn(pos_x, pos_y , 1), pos_x, pos_y , i , j );
+				board[i][j] = new BoardSquare(new Pawn(pos_x, pos_y , WHITE), pos_x, pos_y , i , j );
 			}
 
 
@@ -102,32 +104,32 @@ void Game::init()
 				//THE 2 ROOKS
 				if (j == 0 || j == 7)
 				{
-					board[i][j] = new BoardSquare(new Rook(pos_x, pos_y, 1), pos_x, pos_y , i , j);
+					board[i][j] = new BoardSquare(new Rook(pos_x, pos_y, WHITE), pos_x, pos_y , i , j);
 				}
 
 
 				//THE 2 KNIGHTS
 				if (j == 1 || j == 6)
 				{
-					board[i][j] = new BoardSquare(new Knight(pos_x, pos_y, 1), pos_x, pos_y , i , j);
+					board[i][j] = new BoardSquare(new Knight(pos_x, pos_y, WHITE), pos_x, pos_y , i , j);
 				}
 
 				//THE 2 BISHOPS
 				if (j == 2 || j == 5)
 				{
-					board[i][j] = new BoardSquare(new Bishop(pos_x, pos_y, 1), pos_x, pos_y , i , j);
+					board[i][j] = new BoardSquare(new Bishop(pos_x, pos_y, WHITE), pos_x, pos_y , i , j);
 				}
 
 				//THE QUEEN
 				if (j == 3)
 				{
-					board[i][j] = new BoardSquare(new Queen(pos_x, pos_y, 1), pos_x, pos_y , i , j);
+					board[i][j] = new BoardSquare(new Queen(pos_x, pos_y, WHITE), pos_x, pos_y , i , j);
 				}
 
 				//THE KING
 				if (j == 4)
 				{
-					board[i][j] = new BoardSquare(new King(pos_x, pos_y, 1), pos_x, pos_y , i , j);
+					board[i][j] = new BoardSquare(new King(pos_x, pos_y, WHITE), pos_x, pos_y , i , j);
 
 				}
 			}
@@ -198,7 +200,7 @@ void Game::draw()
 		br.fill_color[0] = 1.0f;
 		br.fill_color[1] = 1.0f;
 		br.fill_color[2] = 1.0f;
-		graphics::setFont(ASSET_PATH  + std::string("SupermercadoOne-Regular.ttf"));
+		graphics::setFont(ASSET_PATH + std::string("SupermercadoOne-Regular.ttf"));
 
 		graphics::drawText(50, 150, 100.0f, winner + " is the winner", br);
 
@@ -362,17 +364,21 @@ void Game::update()
 
 		//we want to make a specific check for pawns only 
 		//This will actually enable his two diagonal directions only if there is an enemy piece in the diagonal square
-		if (active_player->getpieceID() == 5)
+		if (active_player->getpieceID() == PAWN)
 		{
 
-			for (int i = 1; i < legal_moves.size(); i++)
+			for (int i = 0; i < legal_moves.size(); i++)
 			{
 				if (legal_moves[i].empty()) continue;
 				x = legal_moves[i][0][0];
 				y = legal_moves[i][0][1];
 
-				if (!board[x][y]->isThereAPiece()) legal_moves[i].erase(legal_moves[i].begin() + 0);
-				
+				if (!board[x][y]->isThereAPiece() && i > 0) legal_moves[i].erase(legal_moves[i].begin() + 0); 
+				if (board[x][y]->isThereAPiece() && i == 0)
+				{
+					legal_moves[i].erase(legal_moves[i].begin() + 0);
+					if (board[x][y]->getPiece()->getMoves() == 0) printf("%d" , board[x][y]->getPiece()->getMoves());
+				}
 			}
 		}
 
@@ -395,7 +401,7 @@ void Game::update()
 				{
 
 					//if that piece is NOT knight or king 
-					if (active_player->getpieceID() != 4 && active_player->getpieceID() != 3 )
+					if (active_player->getpieceID() != 4 && active_player->getpieceID() != KNIGHT )
 					{
 						
 						//if that legal square has a piece from our team , then break the loop (which means that for the current direction it will show no more squares)
@@ -479,7 +485,7 @@ void Game::update()
 				if (cur_select->getPiecePlayer() != active_player->getPiecePlayer())
 				{
 					//if anyones king gets removed , then the game is over.
-					if (cur_select->getpieceID() == 3)
+					if (cur_select->getpieceID() == KING)
 					{
 						winner = turns == WHITE_TURN ? "White" : "Black";
 						gstate = ENDED;

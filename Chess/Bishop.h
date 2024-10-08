@@ -11,13 +11,13 @@
 class Bishop : public Piece {
 	std::string image = "";
 public:
-	inline Bishop(float x, float y, bool player) : Piece(x, y, player , 6), image(player ? "w-bishop.png" : "b-bishop.png"){}
+	inline Bishop(float x, float y, PLAYER player) : Piece(x, y, player , BISHOP), image(player ? "w-bishop.png" : "b-bishop.png"){}
 
 
 	void draw();
-	void update();
+	
 
-	//legal moves for bishop will be all the available diagonal squares
+	//Diagonal
 	std::vector < std::vector < std::vector <int>>> legalMoves(int board_x , int board_y);
 };
 
@@ -42,8 +42,3 @@ std::vector<std::vector<std::vector<int>>> Bishop::legalMoves(int board_x, int b
 	return vec;
 }
 
-
-
-void Bishop::update()
-{
-}
